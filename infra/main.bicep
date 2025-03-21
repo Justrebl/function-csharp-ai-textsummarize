@@ -16,10 +16,11 @@ param environmentName string
 param location string
 param skipVnet bool = true
 param apiServiceName string = ''
+param loadtestingName string = ''
 param apiUserAssignedIdentityName string = ''
 param applicationInsightsName string = ''
 param appServicePlanName string = ''
-param logAnalyticsName string = ''
+param logAnalyticsName string = 'loadtestingName'
 param resourceGroupName string = ''
 param storageAccountName string = ''
 param vNetName string = ''
@@ -60,7 +61,7 @@ module ai 'app/ai.bicep' = {
   name: 'ai'
   scope: rg
   params: {
-    name: !empty(aiResourceName) ? aiResourceName : '${abbrs.cognitiveServicesTextAnalytics}-${resourceToken}'
+    name: !empty(aiResourceName) ? aiResourceName : '${abbrs.cognitiveServicesTextAnalytics}${resourceToken}'
     location: location
     tags: tags
     customSubDomainName: resourceToken
@@ -101,6 +102,16 @@ module api './app/api.bicep' = {
     }
     virtualNetworkSubnetId: skipVnet ? '' : serviceVirtualNetwork.outputs.appSubnetID
     aiLanguageServiceUrl: ai.outputs.url
+  }
+}
+
+module loadTest 'app/load-test.bicep' = {
+  name: 'loadTest'
+  scope: rg
+  params: {
+    name : !empty(loadtestingName) ? loadtestingName : '${abbrs.loadTestServiceLoadTests}${resourceToken}'
+    location: location
+    tags: tags
   }
 }
 
@@ -266,3 +277,4 @@ output RESOURCE_GROUP string = rg.name
 output UNPROCESSED_PDF_CONTAINER_NAME string = unprocessedPdfContainerName
 output UNPROCESSED_PDF_SYSTEM_TOPIC_NAME string = eventgripdftopic.outputs.unprocessedPdfSystemTopicName
 output TEXT_ANALYTICS_ENDPOINT string = ai.outputs.url
+output AZ_LOAD_TESTING_NAME string = loadTest.outputs.azLoadTestingName

@@ -57,6 +57,7 @@
     "kustoClustersDatabases": "dedb",
     "logicIntegrationAccounts": "ia-",
     "logicWorkflows": "logic-",
+    "loadTestServiceLoadTests": "lt-",
     "machineLearningServicesWorkspaces": "mlw-",
     "managedIdentityUserAssignedIdentities": "id-",
     "managementManagementGroups": "mg-",

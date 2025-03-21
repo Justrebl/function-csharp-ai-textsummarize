@@ -1,3 +1,4 @@
+#!/bin/bash
 # Paramters:
 # Set function_name value to match code that was deployed
 function_name="summarize_function"
